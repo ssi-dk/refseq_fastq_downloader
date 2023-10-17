@@ -23,6 +23,10 @@ if status == 200:
     ena_accession = report_dict['reports'][0]['assembly_info']['biosample']['accession']
     ena_xml = f"https://www.ebi.ac.uk/ena/browser/api/xml/{ena_accession}?includeLinks=false"
     ena_request = requests.get(ena_xml)
+    #print(ena_request.status_code)
+    if int(ena_request.status_code) == 404:
+        print(f'{refseq_accession},{ena_accession},no xml found')
+        sys.exit()
     #print(ena_request.content.decode())
     root = ET.fromstring(ena_request.content.decode())
     sample = root.find('SAMPLE')
