@@ -45,12 +45,16 @@ if status == 200:
             output.write(ena_fastq_request.content.decode())
         if args.download_fastq:
             ena_link_df = pd.read_csv(os.path.join(refseq_folder, 'ena_fastq.tsv'), sep='\t')
-            #print(ena_link_df)
+            ena_link_df = ena_link_df.dropna()
+            print(ena_link_df)
             link_pairs = ena_link_df['fastq_ftp'].tolist()
+            print(link_pairs)
             link_pairs = [i.split(';') for i in link_pairs]
             md5_pairs = ena_link_df['fastq_md5'].tolist()
             md5_pairs = [i.split(';') for i in md5_pairs]
             for i,j in zip(link_pairs, md5_pairs):
+                if type(link_pairs) == float: # weird issue if there's a NaN value in the pandas dataframe, should probably just iterate over the pandas indexes in the future
+                    continue
                 for k,m in zip(i,j):
                     cmd = f'wget \"{k}\" -P {refseq_folder}'
                     fastq_basename = os.path.basename(k)

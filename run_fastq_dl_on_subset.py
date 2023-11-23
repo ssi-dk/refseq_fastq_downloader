@@ -29,7 +29,7 @@ def download_refseq_fastq(refseq_accession, output_folder, download_fastq):
         #print(ena_request.status_code)
         if int(ena_request.status_code) == 404:
             print(f'{refseq_accession},{ena_accession},no xml found')
-            sys.exit()
+            return
         #print(ena_request.content.decode())
         root = ET.fromstring(ena_request.content.decode())
         sample = root.find('SAMPLE')
@@ -48,6 +48,7 @@ def download_refseq_fastq(refseq_accession, output_folder, download_fastq):
                 output.write(ena_fastq_request.content.decode())
             if download_fastq:
                 ena_link_df = pd.read_csv(os.path.join(refseq_folder, 'ena_fastq.tsv'), sep='\t')
+                ena_link_df = ena_link_df.dropna() # missing values will crash the code below
                 #print(ena_link_df)
                 link_pairs = ena_link_df['fastq_ftp'].tolist()
                 link_pairs = [i.split(';') for i in link_pairs]
