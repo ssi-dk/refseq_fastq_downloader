@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "refseq_fastq_downloader"
+  site-url: "https://ssi-dk.github.io/refseq_fastq_downloader"
+  description: "download refseq"
+  repo-branch: main
+  repo-url: "https://github.com/ssi-dk/refseq_fastq_downloader"
