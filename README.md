@@ -1,1 +1,0 @@
-Scripts for downloading fastq files located on the ena ftp server based on their refseq accessions, demo version
